@@ -56,6 +56,8 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchCast(int movieID) async {
+    isLoading = true;
+    notifyListeners();
     try {
       cast = await userRepository.getCast(movieID);
     } on DioException catch (e) {
@@ -67,10 +69,15 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchDetails(int movieID) async {
+    isLoading = true;
+    notifyListeners();
     try {
       detailsModel = await userRepository.getDetails(movieID);
     } on DioException catch (e) {
       DioExceptionHandler.handleDioError(e);
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 }

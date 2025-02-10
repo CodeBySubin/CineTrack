@@ -9,10 +9,15 @@ class UserRepository {
   UserRepository(this.apiClient);
 
   Future<List<Result>> getUser() async {
-    apiClient.setToken(
-        'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmRlYzk0Y2IxZDBhMmU1ODJhYzhkZjg5NWM0M2Q4NiIsIm5iZiI6MTczODM4NzQxNC4xMzkwMDAyLCJzdWIiOiI2NzlkYWZkNjNmZDlkMTJlMWQyNjFiNzciLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.wi0CgGjHDE1sy8pWDWAs8HNFlHVHKVSczf23x4aMshk');
+    int page = 2;
     final response = await apiClient
-        .get(APIEndPoints.movie, params: {'language': 'en-US', 'page': '1'});
+        .get(APIEndPoints.movie, params: {
+        "include_adult": false,
+        "include_video": false,
+        "language": "en-US",
+        "page": page,
+        "sort_by": "popularity.desc"
+      });
     final List<dynamic> resultsJson = response.data['results'];
     return resultsJson.map((json) => Result.fromJson(json)).toList();
   }

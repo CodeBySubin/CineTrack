@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:moviehub/presentation/view/home.dart';
+import 'package:moviehub/presentation/view/main_page.dart';
 import 'package:moviehub/presentation/widgets/gradient_button.dart';
 import 'package:moviehub/core/utils/colors.dart';
 import 'package:moviehub/core/utils/image_constants.dart';
 import 'package:moviehub/core/utils/string_constants.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -13,6 +14,35 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  // Create an instance of the updater class
+  final updater = ShorebirdUpdater();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Get the current patch number and print it to the console.
+    // It will be `null` if no patches are installed.
+    updater.readCurrentPatch().then((currentPatch) {
+      print('The current patch number is: ${currentPatch?.number}');
+    });
+    _checkForUpdates();
+  }
+
+  Future<void> _checkForUpdates() async {
+    // Check whether a new update is available.
+    final status = await updater.checkForUpdate();
+
+    if (status == UpdateStatus.outdated) {
+      try {
+        // Perform the update
+        await updater.update();
+      } on UpdateException catch (error) {
+print(error);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +81,10 @@ class _SplashState extends State<Splash> {
                   GradientButton(
                     text: StringConstants.access,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen()));
                     },
                   ),
                 ],

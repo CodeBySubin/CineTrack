@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moviehub/core/local/local_data.dart';
 import 'package:moviehub/core/network/api_client.dart';
+import 'package:moviehub/data/repositories/favourite_respository.dart';
+import 'package:moviehub/data/repositories/search_repository.dart';
 import 'package:moviehub/data/repositories/user_repository.dart';
 import 'package:moviehub/presentation/view/splash.dart';
+import 'package:moviehub/view_models/favourites_view_model.dart';
+import 'package:moviehub/view_models/search_view_model.dart';
 import 'package:moviehub/view_models/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +21,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-       ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (_) => UserViewModel(UserRepository(ApiClient())),
         ),
+        ChangeNotifierProvider(
+          create: (_) => SearchViewModel(SearchRepository(ApiClient())),
+        ),
+        ChangeNotifierProvider(
+            create: (context) => FavouriteViewModel(
+                FavouriteRepository(LocalDatabaseDataSource()))),
       ],
       child: MaterialApp(
         title: 'Movies App',
