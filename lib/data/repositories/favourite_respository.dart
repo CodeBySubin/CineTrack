@@ -26,4 +26,5 @@ class FavouriteRepository {
   Future<void> deleteMovie(int id) async {
     await localDataSource.deleteMovie(id);
   }
+  
 }

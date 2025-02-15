@@ -68,16 +68,16 @@ print(error);
                           .copyWith(
                               color: Appcolors.white,
                               fontWeight: FontWeight.bold)),
-                  // Text(StringConstants.description_one,
-                  //     style: Theme.of(context)
-                  //         .textTheme
-                  //         .headlineMedium!
-                  //         .copyWith(color: Appcolors.white)),
-                  // Text(StringConstants.description_two,
-                  //     style: Theme.of(context)
-                  //         .textTheme
-                  //         .bodyMedium!
-                  //         .copyWith(color: Appcolors.white)),
+                  Text(StringConstants.description_one,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .copyWith(color: Appcolors.white)),
+                  Text(StringConstants.description_two,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Appcolors.white)),
                   GradientButton(
                     text: StringConstants.access,
                     onPressed: () {

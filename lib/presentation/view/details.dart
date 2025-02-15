@@ -43,141 +43,157 @@ class _DetailsState extends State<Details> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                 Stack(
-  children: [
-    CachedNetworkImage(
-      imageUrl: APIConfig.imageURL + viewModel.detailsModel!.backdropPath,
-      imageBuilder: (context, image) => Container(
-        height: 400,
-        decoration: BoxDecoration(
-          image: DecorationImage(fit: BoxFit.cover, image: image),
-        ),
-      ),
-      errorWidget: (context, url, error) => SizedBox(
-        height: 400,
-        child: Center(
-          child: Icon(
-            Icons.error,
-            color: Colors.red,
-            size: 40,
-          ),
-        ),
-      ),
-      placeholder: (context, url) => SizedBox(
-        height: 400,
-        child: Center(
-          child: CircularProgressIndicator(
-          ),
-        ),
-      ),
-    ),
-    Positioned(
-      top: 50,
-      left: 10,
-      right: 10,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.arrow_back,
-                  color: Appcolors.white,
-                ),
-                Text(
-                  "Back",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Appcolors.white,
+                  Stack(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: APIConfig.imageURL +
+                            viewModel.detailsModel!.backdropPath,
+                        imageBuilder: (context, image) => Container(
+                          height: 400,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover, image: image),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => SizedBox(
+                          height: 400,
+                          child: Center(
+                            child: Icon(
+                              Icons.error,
+                              color: Colors.red,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) => SizedBox(
+                          height: 400,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                       ),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () async {
-              await Provider.of<FavouriteViewModel>(context, listen: false)
-                  .addMovie(viewModel.detailsModel!);
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.black.withAlpha(128),
-              child: Icon(
-                Icons.favorite_outline,
-                color: Appcolors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-    Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        height: 80,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.transparent, Colors.black],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                "${viewModel.detailsModel!.originalTitle} (${DateFormat('yyyy').format(viewModel.detailsModel!.releaseDate)})",
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Appcolors.white,
-                    ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${DateFormat('d/MM/yyyy').format(viewModel.detailsModel!.releaseDate)} (BR)',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Appcolors.textgrey),
-                ),
-                Icon(Icons.schedule, color: Appcolors.textgrey),
-                Text(
-                  convertMinutesToHoursAndMinutes(viewModel.detailsModel!.runtime),
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Appcolors.textgrey,
+                      Positioned(
+                        top: 50,
+                        left: 10,
+                        right: 10,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.arrow_back,
+                                    color: Appcolors.white,
+                                  ),
+                                  Text(
+                                    "Back",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Appcolors.white,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Consumer<FavouriteViewModel>(
+                                builder: (context, favviewModel, child) {
+                              bool data = favviewModel
+                                  .isFavorite(viewModel.detailsModel!.id);
+                              return GestureDetector(
+                                  onTap: () async {
+                                    data
+                                        ? favviewModel.removeMovie(
+                                            viewModel.detailsModel!.id)
+                                        : await Provider.of<FavouriteViewModel>(
+                                                context,
+                                                listen: false)
+                                            .addMovie(viewModel.detailsModel!);
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        Colors.black.withAlpha(128),
+                                    child: Icon(
+                                      data
+                                          ? Icons.favorite
+                                          : Icons.favorite_outline,
+                                      color:
+                                          data ? Colors.red : Appcolors.white,
+                                    ),
+                                  ));
+                            }),
+                          ],
+                        ),
                       ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ),
-  ],
-),
-
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 80,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.transparent, Colors.black],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 30),
+                                child: Text(
+                                  "${viewModel.detailsModel!.originalTitle} (${DateFormat('yyyy').format(viewModel.detailsModel!.releaseDate)})",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Appcolors.white,
+                                      ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${DateFormat('d/MM/yyyy').format(viewModel.detailsModel!.releaseDate)} (BR)',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Appcolors.textgrey),
+                                  ),
+                                  Icon(Icons.schedule,
+                                      color: Appcolors.textgrey),
+                                  Text(
+                                    convertMinutesToHoursAndMinutes(
+                                        viewModel.detailsModel!.runtime),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Appcolors.textgrey,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
@@ -224,7 +240,15 @@ class _DetailsState extends State<Details> {
                               )
                               .toList(),
                         ),
-                        GradientButton(text: 'Watch Trailer', onPressed: () { launchInBrowser(Uri(path: "https://www.youtube.com/watch?v=yQwvCBoS3nc")); },),
+                        GradientButton(
+                          text: 'Watch Trailer',
+                          onPressed: () {
+                            Uri url = Uri.parse(
+                                "https://www.youtube.com/watch?v=yQwvCBoS3nc");
+
+                            launchInBrowser(url);
+                          },
+                        ),
                         Text(
                           "Main Cast",
                           style: Theme.of(context)

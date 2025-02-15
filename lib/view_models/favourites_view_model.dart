@@ -34,4 +34,7 @@ class FavouriteViewModel extends ChangeNotifier {
     await favouriteRepository.deleteMovie(id);
     await loadMovies();
   }
+    bool isFavorite(int id) {
+    return _movies.any((movie) => movie.id == id);
+  }
 }
