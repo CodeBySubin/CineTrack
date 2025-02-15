@@ -45,27 +45,53 @@ class _FavouritesState extends State<Favourites> {
 }
 
 Widget movies(List<DetailsModel> movieList) {
-  return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        childAspectRatio: 0.7,
-      ),
-      itemCount: movieList.length,
-      itemBuilder: (context, i) {
-        return GestureDetector(
+  return Consumer<FavouriteViewModel>(builder: (context, viewModel, child) {
+    return GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          childAspectRatio: 0.7,
+        ),
+        itemCount: movieList.length,
+        itemBuilder: (context, i) {
+          return GestureDetector(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Details(
-                            id: movieList[i].id,
-                          )));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Details(
+                    id: movieList[i].id,
+                  ),
+                ),
+              );
             },
-            child: networkImageWidget(
-              'https://image.tmdb.org/t/p/w500/${movieList[i].posterPath}',
-            ));
-      });
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: networkImageWidget(
+                    'https://image.tmdb.org/t/p/w500/${movieList[i].posterPath}',
+                  ),
+                ),
+                Positioned(
+                  right: 4,
+                  top: 4,
+                  child: GestureDetector(
+                    onTap: () {
+                      viewModel.removeMovie(movieList[i].id);
+                    },
+                    child: Icon(
+                      Icons.delete_outlined,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  });
 }
