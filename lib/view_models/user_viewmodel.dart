@@ -11,7 +11,9 @@ class UserViewModel extends ChangeNotifier {
   int _selectedIndex = 0;
   int _buttonindex = 0;
   bool isLoading = true;
-
+  int _currentPage = 1;
+  bool isFetchingMore = false;
+  String? errorMessage;
   int get selectedIndex => _selectedIndex;
   int get buttonIndex => _buttonindex;
 
@@ -44,13 +46,22 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
+
   Future<void> fetchUsers() async {
+    if (isFetchingMore) return;
+    isFetchingMore = true;
+    notifyListeners();
     try {
-      users = await userRepository.getUser();
+      List<Result> newUsers = await userRepository.getUser(_currentPage);
+      users.addAll(newUsers);
+      _currentPage++;
     } on DioException catch (e) {
-      DioExceptionHandler.handleDioError(e);
+      errorMessage = DioExceptionHandler.handleDioError(e);
     } finally {
       isLoading = false;
+      isFetchingMore = false;
       notifyListeners();
     }
   }

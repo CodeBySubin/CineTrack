@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moviehub/core/utils/colors.dart';
+import 'package:moviehub/core/utils/helper.dart';
 import 'package:moviehub/core/utils/image_constants.dart';
 import 'package:moviehub/presentation/widgets/movie_widget.dart';
 import 'package:moviehub/view_models/search_view_model.dart';
@@ -12,6 +14,23 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  late ScrollHelper scrollHelper;
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollHelper = ScrollHelper(onLoadMore: () {
+      Provider.of<SearchViewModel>(context, listen: false).search();
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollHelper.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SearchViewModel>(builder: (context, viewModel, child) {
@@ -24,7 +43,7 @@ class _SearchState extends State<Search> {
               children: [
                 TextFormField(
                   showCursor: true,
-                  cursorColor: Colors.amber,
+                  cursorColor: Colors.white,
                   textInputAction: TextInputAction.search,
                   keyboardType: TextInputType.text,
                   controller: viewModel.searchController,
@@ -56,10 +75,32 @@ class _SearchState extends State<Search> {
                   ),
                   textAlign: TextAlign.start,
                   onChanged: (value) {
+                    viewModel.currentPage = 1;
+                    viewModel.searchList = [];
                     viewModel.search();
                   },
                 ),
-                Expanded(child: movies(viewModel.searchList)),
+                Expanded(
+                    child: viewModel.searchList.isEmpty
+                        ? Center(
+                            child: Text(
+                              "Find your movies",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Appcolors.white,
+                                  ),
+                            ),
+                          )
+                        : movies(viewModel.searchList,
+                            scrollHelper.scrollController)),
+                if (viewModel.isFetchingMore)
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
               ],
             ),
           ));

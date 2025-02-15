@@ -28,7 +28,17 @@ class _FavouritesState extends State<Favourites> {
           backgroundColor: Colors.transparent,
           body: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: movies(viewModel.movies),
+            child: viewModel.movies.isEmpty
+                ? Center(
+                    child: Text(
+                      "No result found",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: const Color.fromARGB(255, 147, 137, 137),
+                          ),
+                    ),
+                  )
+                : movies(viewModel.movies),
           ));
     });
   }

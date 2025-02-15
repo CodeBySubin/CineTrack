@@ -16,4 +16,8 @@ class APIEndPoints {
   static String search(String query) {
     return "search/movie?query=$query";
   }
+
+  static String video(int movieId) {
+    return "movie/$movieId/videos";
+  }
 }

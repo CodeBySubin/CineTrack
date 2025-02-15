@@ -12,9 +12,11 @@ class ApiClient {
         baseUrl: APIConfig.baseURL,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
+        
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          'Authorization': 'Bearer $_token',
         },
       ),
     );
@@ -22,9 +24,6 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          if (_token != null) {
-            options.headers["Authorization"] = "Bearer $_token";
-          }
           debugPrint("[API REQUEST] ${options.method} → ${options.uri}");
           if (options.data != null) debugPrint("[BODY] ${options.data}");
           return handler.next(options);

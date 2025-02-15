@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moviehub/core/network/api_endpoint.dart';
 import 'package:moviehub/core/utils/helper.dart';
 import 'package:moviehub/data/models/cast_model.dart';
+import 'package:moviehub/presentation/widgets/gradient_button.dart';
 import 'package:moviehub/view_models/favourites_view_model.dart';
 import 'package:moviehub/view_models/user_viewmodel.dart';
 import 'package:moviehub/core/utils/colors.dart';
@@ -223,6 +224,7 @@ class _DetailsState extends State<Details> {
                               )
                               .toList(),
                         ),
+                        GradientButton(text: 'Watch Trailer', onPressed: () { launchInBrowser(Uri(path: "https://www.youtube.com/watch?v=yQwvCBoS3nc")); },),
                         Text(
                           "Main Cast",
                           style: Theme.of(context)

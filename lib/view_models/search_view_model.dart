@@ -6,7 +6,10 @@ import 'package:moviehub/data/repositories/search_repository.dart';
 
 class SearchViewModel extends ChangeNotifier {
   final SearchRepository searchRepository;
-  bool isLoading = true;
+  bool isLoading = false;
+  int currentPage = 1;
+  bool isFetchingMore = false;
+  String? errorMessage;
   TextEditingController searchController = TextEditingController();
   List<Result> searchList = [];
 
@@ -19,11 +22,23 @@ class SearchViewModel extends ChangeNotifier {
   SearchViewModel(this.searchRepository);
 
   Future<void> search() async {
+    if (isFetchingMore || searchController.text.trim().isEmpty) return;
+
+    isFetchingMore = true;
+    notifyListeners();
+
     try {
-      searchList = await searchRepository.getsearch(searchController);
-      notifyListeners();
+      if (currentPage == 1) searchList.clear(); // Clear previous search results for new search
+      List<Result> searchResults = await searchRepository.getSearch(searchController, currentPage);
+      
+      searchList.addAll(searchResults);
+      currentPage++;
+      errorMessage = null; // Reset error message on success
     } on DioException catch (e) {
-      DioExceptionHandler.handleDioError(e);
+      errorMessage = DioExceptionHandler.handleDioError(e);
+    } finally {
+      isFetchingMore = false;
+      notifyListeners();
     }
   }
 }

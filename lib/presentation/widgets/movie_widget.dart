@@ -4,8 +4,9 @@ import 'package:moviehub/data/models/home_model.dart';
 import 'package:moviehub/presentation/view/details.dart';
 import 'package:moviehub/presentation/widgets/network_image_widget.dart';
 
-Widget movies(List<Result> movieList) {
+Widget movies(List<Result> movieList, ScrollController scrollController) {
   return GridView.builder(
+          controller: scrollController, 
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,

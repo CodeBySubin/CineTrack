@@ -3,6 +3,7 @@ import 'package:moviehub/core/utils/colors.dart';
 import 'package:moviehub/presentation/view/favourites.dart';
 import 'package:moviehub/presentation/view/home.dart';
 import 'package:moviehub/presentation/view/search.dart';
+import 'package:moviehub/presentation/widgets/drawer.dart';
 import 'package:moviehub/view_models/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -21,10 +22,17 @@ class _MainScreenState extends State<MainScreen> {
     return Consumer<UserViewModel>(builder: (context, viewModel, child) {
       return Scaffold(
         appBar: AppBar(
-          leading: Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
+          leading: Builder(builder: (context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          }),
           centerTitle: true,
           title: Text("MOVIE HUB",
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
@@ -33,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
                   )),
           backgroundColor: Color(0xff8000FF),
         ),
+        drawer: DrawerWidget(),
         backgroundColor: Colors.transparent,
         body: Consumer<UserViewModel>(builder: (context, viewModel, child) {
           return Container(

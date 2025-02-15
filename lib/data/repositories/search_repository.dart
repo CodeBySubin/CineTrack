@@ -7,11 +7,11 @@ class SearchRepository {
   final ApiClient apiClient;
   SearchRepository(this.apiClient);
 
-  Future<List<Result>> getsearch(TextEditingController keyword) async {
-    final response = await apiClient.get(APIEndPoints.search(keyword.text));
-    print(keyword);
-    print(response);
-    final List<dynamic> resultsJson = response.data['results'];
-    return resultsJson.map((json) => Result.fromJson(json)).toList();
+  Future<List<Result>> getSearch(
+      TextEditingController keyword, int page) async {
+    final response = await apiClient
+        .get(APIEndPoints.search(keyword.text), params: {"page": page});
+    final List<dynamic>? resultsJson = response.data['results'];
+    return resultsJson?.map((json) => Result.fromJson(json)).toList() ?? [];
   }
 }

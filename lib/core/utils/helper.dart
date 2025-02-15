@@ -43,6 +43,9 @@
 // │   ├── service_locator.dart            # Dependency injection setup
 // ├── main.dart                           # Main entry point for the application
 
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 String convertMinutesToHoursAndMinutes(int totalMinutes) {
   int hours = totalMinutes ~/ 60; // Divide by 60 to get hours
   int minutes = totalMinutes % 60; // Get the remainder for minutes
@@ -51,3 +54,32 @@ String convertMinutesToHoursAndMinutes(int totalMinutes) {
   return '${hours}h ${minutes}m';
 }
 
+class ScrollHelper {
+  late ScrollController scrollController;
+  final Function onLoadMore; // Callback function
+
+  ScrollHelper({required this.onLoadMore}) {
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent - 100) {
+      onLoadMore(); // Call the provided function when near the bottom
+    }
+  }
+
+  void dispose() {
+    scrollController.dispose();
+  }
+}
+
+  Future<void> launchInBrowser(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
