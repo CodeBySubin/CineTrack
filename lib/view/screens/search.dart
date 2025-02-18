@@ -24,7 +24,6 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-
     scrollHelper = ScrollHelper(onLoadMore: () {
       Provider.of<SearchViewModel>(context, listen: false).search();
     });

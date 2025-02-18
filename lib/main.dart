@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:moviehub/core/local/local_data.dart';
-import 'package:moviehub/core/network/api_client.dart';
 import 'package:moviehub/view/screens/splash.dart';
 import 'package:moviehub/view_models/detail_view_model.dart';
 import 'package:moviehub/view_models/favourites_view_model.dart';
@@ -8,7 +8,8 @@ import 'package:moviehub/view_models/search_view_model.dart';
 import 'package:moviehub/view_models/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async{
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
