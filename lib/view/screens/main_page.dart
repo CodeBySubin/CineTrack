@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviehub/core/utils/colors.dart';
+import 'package:moviehub/core/utils/string_constants.dart';
 import 'package:moviehub/view/screens/favourites.dart';
 import 'package:moviehub/view/screens/home.dart';
 import 'package:moviehub/view/screens/search.dart';
@@ -34,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
             );
           }),
           centerTitle: true,
-          title: Text("MOVIE HUB",
+          title: Text(StringConstants.appname,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Appcolors.white,
