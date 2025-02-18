@@ -1,40 +1,67 @@
 import 'package:dio/dio.dart';
 
 class DioExceptionHandler {
-  static String handleDioError(DioException error) {
+  static Errors handleDioError(DioException error) {
+    int? statusCode = error.response?.statusCode;
+    String message;
+
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
-        return "Connection timed out. Please check your internet.";
+        message = "Connection timed out. Please check your internet.";
+        break;
       case DioExceptionType.sendTimeout:
-        return "Request timed out. Try again later.";
+        message = "Request timed out. Try again later.";
+        break;
       case DioExceptionType.receiveTimeout:
-        return "Server took too long to respond.";
+        message = "Server took too long to respond.";
+        break;
       case DioExceptionType.badResponse:
         return handleBadResponse(error);
       case DioExceptionType.cancel:
-        return "Request was cancelled.";
+        message = "Request was cancelled.";
+        break;
       case DioExceptionType.connectionError:
-        return "No internet connection.";
+        message = "No internet connection.";
+        break;
       case DioExceptionType.unknown:
       default:
-        return "Something went wrong. Please try again.";
+        message = "Something went wrong. Please try again.";
+        break;
     }
+
+    return Errors(message: message, statusCode: statusCode?.toString());
   }
 
-  static String handleBadResponse(DioException error) {
-    if (error.response == null) return "Unknown error occurred.";
-    switch (error.response?.statusCode) {
+  static Errors handleBadResponse(DioException error) {
+    int? statusCode = error.response?.statusCode;
+    String message;
+
+    switch (statusCode) {
       case 400:
-        return "Bad request. Please try again.";
+        message = "Bad request. Please try again.";
+        break;
       case 401:
-        return "Unauthorized. Please log in again.";
+        message = "Unauthorized. Please log in again.";
+        break;
       case 403:
-        return "Access denied. You don't have permission.";
+        message = "Access denied. You don't have permission.";
+        break;
       case 404:
-        return "Resource not found.";
+        message = "Resource not found.";
+        break;
       case 500:
       default:
-        return "Server error. Please try again later.";
+        message = "Server error. Please try again later.";
+        break;
     }
+
+    return Errors(message: message, statusCode: statusCode?.toString() ?? "Unknown");
   }
+}
+
+class Errors {
+  final String message;
+  final String? statusCode;
+
+  Errors({required this.message, this.statusCode});
 }

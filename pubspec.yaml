@@ -43,6 +43,7 @@ dependencies:
   shorebird_code_push: ^2.0.3
   dio_smart_retry: ^7.0.1
   url_launcher: ^6.3.1
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

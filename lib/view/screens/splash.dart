@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moviehub/presentation/view/main_page.dart';
-import 'package:moviehub/presentation/widgets/gradient_button.dart';
+import 'package:moviehub/view/screens/main_page.dart';
+import 'package:moviehub/view/widgets/gradient_button.dart';
 import 'package:moviehub/core/utils/colors.dart';
 import 'package:moviehub/core/utils/image_constants.dart';
 import 'package:moviehub/core/utils/string_constants.dart';
@@ -14,31 +14,24 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  // Create an instance of the updater class
   final updater = ShorebirdUpdater();
 
   @override
   void initState() {
     super.initState();
-
-    // Get the current patch number and print it to the console.
-    // It will be `null` if no patches are installed.
     updater.readCurrentPatch().then((currentPatch) {
-      print('The current patch number is: ${currentPatch?.number}');
+      debugPrint('The current patch number is: ${currentPatch?.number}');
     });
     _checkForUpdates();
   }
 
   Future<void> _checkForUpdates() async {
-    // Check whether a new update is available.
     final status = await updater.checkForUpdate();
-
     if (status == UpdateStatus.outdated) {
       try {
-        // Perform the update
         await updater.update();
       } on UpdateException catch (error) {
-print(error);
+        debugPrint(error.toString());
       }
     }
   }
@@ -51,6 +44,7 @@ print(error);
           Image.asset(
             AppImages.splashimage,
             width: double.infinity,
+            height: double.infinity,
             fit: BoxFit.fill,
           ),
           Positioned(

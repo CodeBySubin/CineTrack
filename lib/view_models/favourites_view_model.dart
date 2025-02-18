@@ -1,40 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:moviehub/data/models/details_model.dart';
-import 'package:moviehub/data/repositories/favourite_respository.dart';
+import 'package:moviehub/core/local/local_data.dart';
+import 'package:moviehub/models/details_model.dart';
 
 class FavouriteViewModel extends ChangeNotifier {
-  final FavouriteRepository favouriteRepository;
+  final LocalDatabaseDataSource localDataSource;
 
   List<DetailsModel> _movies = [];
 
-  FavouriteViewModel(this.favouriteRepository);
+  FavouriteViewModel(this.localDataSource){
+    loadMovies();
+  }
 
   List<DetailsModel> get movies => _movies;
 
   // Initialize repository
   Future<void> init() async {
-    await favouriteRepository.init();
     await loadMovies();
   }
 
-  // Load all movies
   Future<void> loadMovies() async {
-    _movies = await favouriteRepository.getMovies();
-    notifyListeners();  // Notify the UI to rebuild
+    _movies =  await localDataSource.getMovies();
+    notifyListeners(); 
   }
 
   // Add a movie
   Future<void> addMovie(DetailsModel movie) async {
-    await favouriteRepository.insertMovie(movie);
+    await localDataSource.insertMovie(movie);
     await loadMovies();
   }
 
   // Delete a movie
   Future<void> removeMovie(int id) async {
-    await favouriteRepository.deleteMovie(id);
+    await localDataSource.deleteMovie(id);
     await loadMovies();
   }
     bool isFavorite(int id) {
     return _movies.any((movie) => movie.id == id);
   }
 }
+
+

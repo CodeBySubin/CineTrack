@@ -1,7 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'dart:convert';
-import 'package:moviehub/data/models/details_model.dart';
+import 'package:moviehub/models/details_model.dart';
 
 class LocalDatabaseDataSource {
   static final LocalDatabaseDataSource _instance = LocalDatabaseDataSource._internal();

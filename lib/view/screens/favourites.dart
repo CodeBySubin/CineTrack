@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moviehub/data/models/details_model.dart';
-import 'package:moviehub/presentation/view/details.dart';
-import 'package:moviehub/presentation/widgets/network_image_widget.dart';
+import 'package:moviehub/core/network/api_endpoint.dart';
+import 'package:moviehub/models/details_model.dart';
+import 'package:moviehub/view/screens/details.dart';
+import 'package:moviehub/view/widgets/network_image_widget.dart';
+import 'package:moviehub/view/widgets/no_result_widget.dart';
 import 'package:moviehub/view_models/favourites_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +16,6 @@ class Favourites extends StatefulWidget {
 
 class _FavouritesState extends State<Favourites> {
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<FavouriteViewModel>(context, listen: false).loadMovies();
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<FavouriteViewModel>(builder: (context, viewModel, child) {
       return Scaffold(
@@ -29,15 +23,7 @@ class _FavouritesState extends State<Favourites> {
           body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: viewModel.movies.isEmpty
-                ? Center(
-                    child: Text(
-                      "No result found",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 147, 137, 137),
-                          ),
-                    ),
-                  )
+                ? NoResultWidget()
                 : movies(viewModel.movies),
           ));
     });
@@ -72,7 +58,7 @@ Widget movies(List<DetailsModel> movieList) {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: networkImageWidget(
-                    'https://image.tmdb.org/t/p/w500/${movieList[i].posterPath}',
+                    APIConfig.imageURL + movieList[i].posterPath,
                   ),
                 ),
                 Positioned(

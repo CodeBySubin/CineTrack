@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moviehub/core/utils/colors.dart';
-import 'package:moviehub/presentation/view/favourites.dart';
-import 'package:moviehub/presentation/view/home.dart';
-import 'package:moviehub/presentation/view/search.dart';
-import 'package:moviehub/presentation/widgets/drawer.dart';
-import 'package:moviehub/view_models/user_viewmodel.dart';
+import 'package:moviehub/view/screens/favourites.dart';
+import 'package:moviehub/view/screens/home.dart';
+import 'package:moviehub/view/screens/search.dart';
+import 'package:moviehub/view/widgets/drawer.dart';
+import 'package:moviehub/view_models/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {

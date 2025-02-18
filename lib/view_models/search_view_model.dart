@@ -1,15 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moviehub/core/network/api_endpoint.dart';
 import 'package:moviehub/core/network/dio_exception.dart';
-import 'package:moviehub/data/models/home_model.dart';
-import 'package:moviehub/data/repositories/search_repository.dart';
+import 'package:moviehub/models/home_model.dart';
+import 'package:moviehub/view_models/base_view_model.dart';
 
-class SearchViewModel extends ChangeNotifier {
-  final SearchRepository searchRepository;
-  bool isLoading = false;
+class SearchViewModel extends BaseViewModel {
   int currentPage = 1;
   bool isFetchingMore = false;
-  String? errorMessage;
+  Errors? errorMessage;
   TextEditingController searchController = TextEditingController();
   List<Result> searchList = [];
 
@@ -19,21 +18,21 @@ class SearchViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  SearchViewModel(this.searchRepository);
-
   Future<void> search() async {
     if (isFetchingMore || searchController.text.trim().isEmpty) return;
-
     isFetchingMore = true;
     notifyListeners();
-
     try {
-      if (currentPage == 1) searchList.clear(); // Clear previous search results for new search
-      List<Result> searchResults = await searchRepository.getSearch(searchController, currentPage);
-      
+      if (currentPage == 1) searchList.clear();
+      final response = await apiClient.get(
+          APIEndPoints.search(searchController.text),
+          params: {"page": currentPage});
+      final List<dynamic>? resultsJson = response.data['results'];
+      List<Result> searchResults =
+          resultsJson?.map((json) => Result.fromJson(json)).toList() ?? [];
       searchList.addAll(searchResults);
       currentPage++;
-      errorMessage = null; // Reset error message on success
+      errorMessage = null;
     } on DioException catch (e) {
       errorMessage = DioExceptionHandler.handleDioError(e);
     } finally {

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:moviehub/data/models/home_model.dart';
-import 'package:moviehub/presentation/view/details.dart';
-import 'package:moviehub/presentation/widgets/network_image_widget.dart';
+import 'package:moviehub/models/home_model.dart';
+import 'package:moviehub/view/screens/details.dart';
+import 'package:moviehub/view/widgets/network_image_widget.dart';
 
 Widget movies(List<Result> movieList, ScrollController scrollController) {
   return GridView.builder(

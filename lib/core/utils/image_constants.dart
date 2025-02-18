@@ -1,5 +1,5 @@
 class AppImages {
-  static const splashimage ="assets/images/splash.png";
+  static const splashimage ="assets/images/splash.jpg";
   static const search ="assets/icon/Search.png";
 }
 
