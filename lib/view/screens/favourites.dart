@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviehub/core/network/api_endpoint.dart';
+import 'package:moviehub/core/utils/colors.dart';
 import 'package:moviehub/models/details_model.dart';
 import 'package:moviehub/view/screens/details.dart';
 import 'package:moviehub/view/widgets/network_image_widget.dart';
@@ -58,7 +59,7 @@ Widget movies(List<DetailsModel> movieList) {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: networkImageWidget(
-                    APIConfig.imageURL + movieList[i].posterPath,
+                    APIConfig.imageURL + movieList[i].posterPath!,
                   ),
                 ),
                 Positioned(
@@ -70,7 +71,7 @@ Widget movies(List<DetailsModel> movieList) {
                     },
                     child: Icon(
                       Icons.delete_outlined,
-                      color: Colors.white,
+                      color: Appcolors.white,
                       size: 20,
                     ),
                   ),

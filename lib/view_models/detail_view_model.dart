@@ -9,8 +9,8 @@ import 'package:moviehub/view_models/base_view_model.dart';
 class DetailViewModel extends BaseViewModel {
   Errors? errorMessage;
   List<Cast> cast = [];
+  List<LinkModel> videos = [];
   DetailsModel? detailsModel;
-  LinkModel? linkModel;
 
   Future<void> fetchDetails(int movieID) async {
     setLoading(true);
@@ -28,7 +28,8 @@ class DetailViewModel extends BaseViewModel {
     setLoading(true);
     try {
       final response = await apiClient.get(APIEndPoints.video(movieID));
-      linkModel = LinkModel.fromJson(response.data['results'][0]);
+      final List<dynamic> resultsJson = response.data['results'];
+      videos = resultsJson.map((json) => LinkModel.fromJson(json)).toList();
     } on DioException catch (e) {
       errorMessage = DioExceptionHandler.handleDioError(e);
     } finally {

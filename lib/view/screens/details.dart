@@ -2,11 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:moviehub/core/network/api_endpoint.dart';
 import 'package:moviehub/core/utils/helper.dart';
+import 'package:moviehub/core/utils/string_constants.dart';
 import 'package:moviehub/models/cast_model.dart';
 import 'package:moviehub/view/widgets/base_state_widget.dart';
-import 'package:moviehub/view/widgets/error_widget.dart';
 import 'package:moviehub/view/widgets/gradient_button.dart';
-import 'package:moviehub/view/widgets/loader_widget.dart';
 import 'package:moviehub/view_models/detail_view_model.dart';
 import 'package:moviehub/view_models/favourites_view_model.dart';
 import 'package:moviehub/core/utils/colors.dart';
@@ -52,7 +51,7 @@ class _DetailsState extends State<Details> {
                           children: [
                             CachedNetworkImage(
                               imageUrl: APIConfig.imageURL +
-                                  viewModel.detailsModel!.backdropPath,
+                                  viewModel.detailsModel!.backdropPath!,
                               imageBuilder: (context, image) => Container(
                                 height: 400,
                                 decoration: BoxDecoration(
@@ -65,7 +64,7 @@ class _DetailsState extends State<Details> {
                                 child: Center(
                                   child: Icon(
                                     Icons.error,
-                                    color: Colors.red,
+                                    color: Appcolors.red,
                                     size: 40,
                                   ),
                                 ),
@@ -88,6 +87,7 @@ class _DetailsState extends State<Details> {
                                   GestureDetector(
                                     onTap: () => Navigator.pop(context),
                                     child: Row(
+                                      spacing: 10,
                                       children: [
                                         Icon(
                                           Icons.arrow_back,
@@ -130,7 +130,7 @@ class _DetailsState extends State<Details> {
                                                 ? Icons.favorite
                                                 : Icons.favorite_outline,
                                             color: data
-                                                ? Colors.red
+                                                ? Appcolors.red
                                                 : Appcolors.white,
                                           ),
                                         ));
@@ -159,7 +159,7 @@ class _DetailsState extends State<Details> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 30),
                                       child: Text(
-                                        viewModel.detailsModel!.originalTitle,
+                                        viewModel.detailsModel!.originalTitle!,
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -177,7 +177,7 @@ class _DetailsState extends State<Details> {
                                         Text(
                                           DateFormat('d/MM/yyyy').format(
                                               viewModel
-                                                  .detailsModel!.releaseDate),
+                                                  .detailsModel!.releaseDate!),
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall!
@@ -189,7 +189,7 @@ class _DetailsState extends State<Details> {
                                             color: Appcolors.textgrey),
                                         Text(
                                           convertMinutesToHoursAndMinutes(
-                                              viewModel.detailsModel!.runtime),
+                                              viewModel.detailsModel!.runtime!),
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall!
@@ -214,7 +214,7 @@ class _DetailsState extends State<Details> {
                             spacing: 20,
                             children: [
                               Text(
-                                viewModel.detailsModel!.overview,
+                                viewModel.detailsModel!.overview!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
@@ -227,7 +227,7 @@ class _DetailsState extends State<Details> {
                               Wrap(
                                 spacing: 10,
                                 runSpacing: 10,
-                                children: viewModel.detailsModel!.genres
+                                children: viewModel.detailsModel!.genres!
                                     .map(
                                       (item) => IntrinsicWidth(
                                         child: Container(
@@ -255,29 +255,19 @@ class _DetailsState extends State<Details> {
                                     )
                                     .toList(),
                               ),
-                              viewModel.linkModel!.key.isNotEmpty
+                              viewModel.videos.isNotEmpty
                                   ? GradientButton(
                                       text: 'Watch Trailer',
                                       onPressed: () {
                                         Uri url = Uri.parse(APIConfig.youtube +
-                                            viewModel.linkModel!.key);
-
+                                            viewModel.videos[0].key);
                                         launchInBrowser(url);
                                       },
                                     )
                                   : Container(),
-                              Text(
-                                "Main Cast",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Appcolors.white,
-                                    ),
-                                textAlign: TextAlign.justify,
-                              ),
-                              cast(viewModel.cast),
+                              viewModel.cast.isEmpty
+                                  ? Container()
+                                  : cast(viewModel.cast, context),
                             ],
                           ),
                         )
@@ -288,41 +278,55 @@ class _DetailsState extends State<Details> {
   }
 }
 
-Widget cast(List<Cast> cast) {
-  return SizedBox(
-      height: 110,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: cast.length,
-        itemBuilder: (context, i) {
-          return Column(
-            spacing: 5,
-            children: [
-              CachedNetworkImage(
-                imageUrl: APIConfig.imageURL + cast[i].profilePath,
-                imageBuilder: (context, image) => CircleAvatar(
-                  backgroundImage: image,
-                  radius: 40,
-                ),
-                placeholder: (context, url) => Center(
-                    child: CircleAvatar(
-                        radius: 40, child: CircularProgressIndicator())),
-                errorWidget: (context, url, error) => Center(
-                    child: CircleAvatar(
-                        radius: 40, child: const Icon(Icons.error))),
-              ),
-              Text(cast[i].name,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Appcolors.white,
-                      )),
-            ],
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return Container(
-            width: 20,
-          );
-        },
-      ));
+Widget cast(List<Cast> cast, BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    spacing: 15,
+    children: [
+      Text(
+        StringConstants.mainCast,
+        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Appcolors.white,
+            ),
+        textAlign: TextAlign.justify,
+      ),
+      SizedBox(
+          height: 110,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: cast.length,
+            itemBuilder: (context, i) {
+              return Column(
+                spacing: 5,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: APIConfig.imageURL + cast[i].profilePath,
+                    imageBuilder: (context, image) => CircleAvatar(
+                      backgroundImage: image,
+                      radius: 40,
+                    ),
+                    placeholder: (context, url) => Center(
+                        child: CircleAvatar(
+                            radius: 40, child: CircularProgressIndicator())),
+                    errorWidget: (context, url, error) => Center(
+                        child: CircleAvatar(
+                            radius: 40, child: const Icon(Icons.error))),
+                  ),
+                  Text(cast[i].name,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Appcolors.white,
+                          )),
+                ],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Container(
+                width: 20,
+              );
+            },
+          )),
+    ],
+  );
 }

@@ -6,6 +6,7 @@ import 'package:moviehub/view/screens/home.dart';
 import 'package:moviehub/view/screens/search.dart';
 import 'package:moviehub/view/widgets/drawer.dart';
 import 'package:moviehub/view_models/home_viewmodel.dart';
+import 'package:moviehub/view_models/search_view_model.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
             return IconButton(
               icon: const Icon(
                 Icons.menu,
-                color: Colors.white,
+                color: Appcolors.white,
               ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
@@ -40,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
                     fontWeight: FontWeight.bold,
                     color: Appcolors.white,
                   )),
-          backgroundColor: Color(0xff8000FF),
+          backgroundColor: Appcolors.primaryColor,
         ),
         drawer: DrawerWidget(),
         backgroundColor: Colors.transparent,
@@ -49,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xff8000FF), Colors.black],
+                  colors: [Appcolors.primaryColor, Appcolors.secondaryColor],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -60,29 +61,32 @@ class _MainScreenState extends State<MainScreen> {
           height: 70,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.black,
+            backgroundColor: Appcolors.secondaryColor,
             iconSize: 22.0,
             selectedIconTheme: IconThemeData(size: 28.0),
             currentIndex: viewModel.selectedIndex,
-            selectedItemColor: Color(0xff8000FF),
+            selectedItemColor: Appcolors.primaryColor,
             unselectedItemColor: Colors.white70,
             selectedFontSize: 14.0,
             unselectedFontSize: 12,
             onTap: (index) {
+              if (index == 1) {
+                Provider.of<SearchViewModel>(context, listen: false).clear();
+              }
               viewModel.changeIndex(index);
             },
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: "Home",
+                label: StringConstants.home,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                label: "Search",
+                label: StringConstants.search,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_outline),
-                label: "Favorites",
+                label: StringConstants.favourites,
               ),
             ],
           ),

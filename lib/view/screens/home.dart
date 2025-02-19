@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
     return Consumer<UserViewModel>(
       builder: (context, viewModel, child) {
         return BaseStateWidget(
-            isLoading: viewModel.isLoading,
+            isLoading: (viewModel.isFetchingMore && viewModel.currentPage == 1),
             errorMessage: viewModel.errorMessage,
             content: () => SafeArea(
                   child: Padding(
@@ -48,15 +48,12 @@ class _HomeState extends State<Home> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 16),
                         Expanded(
                             child: movies(
                                 viewModel.home, scrollHelper.scrollController)),
-                        if (viewModel.isFetchingMore)
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
+                        if (viewModel.isFetchingMore &&
+                            viewModel.currentPage != 1)
+                          loaderWidget(),
                       ],
                     ),
                   ),

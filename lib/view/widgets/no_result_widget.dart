@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviehub/core/utils/colors.dart';
+import 'package:moviehub/core/utils/string_constants.dart';
 
 class NoResultWidget extends StatelessWidget {
   final String message;
@@ -7,7 +8,7 @@ class NoResultWidget extends StatelessWidget {
 
   const NoResultWidget({
     super.key,
-    this.message = "No result found",
+    this.message = StringConstants.noResult,
     this.textStyle,
   });
 

@@ -12,7 +12,7 @@ class CustomErrorWidget extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xff8000FF), Colors.black],
+            colors: [Appcolors.primaryColor, Appcolors.secondaryColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

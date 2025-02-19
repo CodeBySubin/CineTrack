@@ -18,6 +18,11 @@ class SearchViewModel extends BaseViewModel {
     super.dispose();
   }
 
+  void clear() {
+    searchList.clear();
+    searchController.clear();
+  }
+
   Future<void> search() async {
     if (isFetchingMore || searchController.text.trim().isEmpty) return;
     isFetchingMore = true;
@@ -26,7 +31,7 @@ class SearchViewModel extends BaseViewModel {
       if (currentPage == 1) searchList.clear();
       final response = await apiClient.get(
           APIEndPoints.search(searchController.text),
-          params: {"page": currentPage});
+          params: {"page": currentPage, "include_adult": false});
       final List<dynamic>? resultsJson = response.data['results'];
       List<Result> searchResults =
           resultsJson?.map((json) => Result.fromJson(json)).toList() ?? [];

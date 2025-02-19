@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviehub/core/network/dio_exception.dart';
+import 'package:moviehub/core/utils/colors.dart';
 
 class BaseStateWidget extends StatelessWidget {
   final bool isLoading;
@@ -30,7 +31,7 @@ class BaseStateWidget extends StatelessWidget {
           : Center(
               child: Text(
                 errorMessage!.message,
-                style: const TextStyle(color: Colors.red),
+                style: TextStyle(color: Appcolors.red),
               ),
             );
     }

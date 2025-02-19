@@ -5,7 +5,7 @@ import 'package:moviehub/core/network/api_endpoint.dart';
 
 class ApiClient {
   late final Dio _dio;
-  String? _token = dotenv.env['API_KEY'];
+  final String? _token = dotenv.env['API_KEY'];
 
   ApiClient() {
     _dio = Dio(
@@ -45,15 +45,6 @@ class ApiClient {
     );
   }
 
-  /// **Set or update authentication token**
-  void setToken(String token) {
-    _token = token;
-  }
-
-  /// **Clear authentication token (e.g., on logout)**
-  void clearToken() {
-    _token = null;
-  }
 
   /// **GET Request**
   Future<Response> get(String endpoint, {Map<String, dynamic>? params}) async {

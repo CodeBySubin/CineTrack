@@ -45,7 +45,7 @@ class _SplashState extends State<Splash> {
             AppImages.splashimage,
             width: double.infinity,
             height: double.infinity,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
           Positioned(
               bottom: 20,

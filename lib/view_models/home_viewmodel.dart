@@ -39,7 +39,7 @@ class UserViewModel extends BaseViewModel {
     try {
       if (currentPage == 1) home.clear();
       final response = await apiClient
-          .get(APIEndPoints.movie, params: {"page": currentPage});
+          .get(APIEndPoints.movie, params: {"page": currentPage, "include_adult": false});
       final List<dynamic>? resultsJson = response.data['results'];
       List<Result> searchResults =
           resultsJson?.map((json) => Result.fromJson(json)).toList() ?? [];
