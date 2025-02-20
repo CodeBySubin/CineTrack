@@ -1,0 +1,2 @@
+C:/Interview Preperation/movie-hub/android/app/.cxx/RelWithDebInfo/5fx29342/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Interview Preperation/movie-hub/android/app/.cxx/RelWithDebInfo/5fx29342/arm64-v8a/CMakeFiles/rebuild_cache.dir

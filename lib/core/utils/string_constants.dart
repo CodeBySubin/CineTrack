@@ -5,7 +5,7 @@ class StringConstants {
       "Everything about movies, from classics to the latest blockbusters.";
   static const description_two =
       "Stay informed about movies, reviews, and upcoming releases.";
-  static const appname = "Cine Guide";
+  static const appname = "CineTrack";
   static const findYourMovie = "Find your movies";
   static const home = "Home";
   static const search = "Search";
