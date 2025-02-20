@@ -73,7 +73,7 @@ class _SplashState extends State<Splash> {
                           .bodyMedium!
                           .copyWith(color: Appcolors.white)),
                   GradientButton(
-                    text: StringConstants.access,
+                    text: StringConstants.getStarted,
                     onPressed: () {
                       Navigator.push(
                           context,

@@ -1,4 +1,4 @@
-# 🎥 CineTrack - A Professional Flutter Application
+# 🎥 CineTrack - A Flutter Application
 
 ## 🚀 Overview
 
@@ -8,7 +8,6 @@
 - 🎭 **Detailed Cast & Crew Information**
 - 🎬 **Trailers & Exclusive Movie Clips**
 - 🔍 **Advanced Search & Discovery Features**
-- 📌 **Personalized Watchlist & Favorites**
 
 With an intuitive, responsive interface and smooth navigation, **CineTrack** ensures an exceptional user experience for movie enthusiasts.
 
@@ -41,7 +40,6 @@ cinetrack/
 │── lib/
 │   ├── main.dart          # Application entry point
 │   ├── core/              # Core utilities, constants, and configurations
-│   ├── features/          # Main feature modules (Movies, Search, Favorites)
 │   ├── models/            # Data models (Model Layer)
 │   ├── view/              # UI screens (View Layer)
 │   ├── viewmodels/        # Business logic & state management (ViewModel Layer)
@@ -84,10 +82,11 @@ Follow these steps to set up and run **CineTrack** on your local machine:
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1PAEC7zMYiDrn-2ygfriYHG11HMdEFYAv" width="100" alt="Screenshot 1">
-  <img src="https://drive.google.com/uc?export=view&id=12lsyGU949PO7vY5M9rKB8aznvG32eJbs" width="100" alt="Screenshot 2">
-  <img src="https://drive.google.com/uc?export=view&id=1869pJ4D6JgO0wFhS_DlVi3R3T0yCLeF8" width="100" alt="Screenshot 3">
-  <img src="https://drive.google.com/uc?export=view&id=1zHi2JLCj459nDNk5CM9Jj0fAlS4tVfdL" width="100" alt="Screenshot 4">
+  <img src="https://drive.google.com/uc?export=view&id=1Wh4wqghl69LtGK7s1Qlw6GUbJPAQq6wO" width="100" alt="Screenshot 1">
+  <img src="https://drive.google.com/uc?export=view&id=1PAEC7zMYiDrn-2ygfriYHG11HMdEFYAv" width="100" alt="Screenshot 2">
+  <img src="https://drive.google.com/uc?export=view&id=12lsyGU949PO7vY5M9rKB8aznvG32eJbs" width="100" alt="Screenshot 3">
+  <img src="https://drive.google.com/uc?export=view&id=1869pJ4D6JgO0wFhS_DlVi3R3T0yCLeF8" width="100" alt="Screenshot 4">
+  <img src="https://drive.google.com/uc?export=view&id=1zHi2JLCj459nDNk5CM9Jj0fAlS4tVfdL" width="100" alt="Screenshot 5">
 </p>
 
 

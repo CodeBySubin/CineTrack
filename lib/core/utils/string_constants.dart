@@ -13,5 +13,6 @@ class StringConstants {
   static const settings = "Settings";
   static const movies = "Movies";
     static const noResult = "No result found";
+  static const getStarted= "Get Started";
 
 }
