@@ -75,10 +75,10 @@ class _SplashState extends State<Splash> {
                   GradientButton(
                     text: StringConstants.getStarted,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainScreen()));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainScreen()),
+                      );
                     },
                   ),
                 ],
